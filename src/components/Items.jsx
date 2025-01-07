@@ -2,7 +2,13 @@ import React from "react";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 
-const Items = ({ item, handleDelete, handleEdit, handleCheckItem }) => {
+const Items = ({
+  item,
+  handleDelete,
+  handleEdit,
+  checkedItem,
+  handleCheckItem,
+}) => {
   return (
     <li className="flex justify-between items-center bg-slate-800 bg-opacity-30 hover:shadow-xl p-3 rounded-full min-w-80 transition-all ease-in-out hover:scale-105">
       <input

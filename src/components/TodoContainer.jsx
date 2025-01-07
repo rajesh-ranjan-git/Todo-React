@@ -4,6 +4,7 @@ import Items from "./Items";
 
 const TodoContainer = () => {
   const [items, setItems] = useState([]);
+  const [checkedItem, setCheckedItem] = useState([]);
   const inputVal = useRef();
 
   const handleAddItems = (item) => {
@@ -32,6 +33,11 @@ const TodoContainer = () => {
   const handleCheckItem = (e) => {
     console.log(e.target.id);
     console.log(e.target.checked);
+    if (!checkedItem.includes(e.target.id)) {
+      setCheckedItem((prev) => [...prev, e.target.id]);
+    } else {
+      setCheckedItem((prev) => prev.filter((i) => i !== item));
+    }
   };
 
   useEffect(() => {
@@ -71,6 +77,7 @@ const TodoContainer = () => {
                 item={item}
                 handleDelete={handleDelete}
                 handleEdit={handleEdit}
+                checkedItem={checkedItem}
                 handleCheckItem={handleCheckItem}
               />
             );
