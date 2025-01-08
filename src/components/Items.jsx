@@ -7,7 +7,7 @@ const Items = ({
   handleDelete,
   isEditEnabled,
   handleEdit,
-  checkedItem,
+  checkedItems,
   handleCheckItem,
 }) => {
   const editInputVal = useRef();
@@ -40,7 +40,7 @@ const Items = ({
           />
           <p
             className={
-              checkedItem.includes(item)
+              checkedItems.includes(item)
                 ? "line-through decoration-orange-500 break-words text-wrap max-w-[50vw]"
                 : "break-words text-wrap max-w-[50vw]"
             }

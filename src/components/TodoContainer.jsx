@@ -4,8 +4,9 @@ import Items from "./Items";
 
 const TodoContainer = () => {
   const [items, setItems] = useState([]);
-  const [checkedItem, setCheckedItem] = useState([]);
+  const [checkedItems, setCheckedItems] = useState([]);
   const [isEditEnabled, setIsEditEnabled] = useState(null);
+  const [todo, setTodo] = useState({});
   const inputVal = useRef();
 
   const handleAddItems = (item) => {
@@ -27,7 +28,7 @@ const TodoContainer = () => {
 
   const handleDelete = (item) => {
     setItems((prev) => prev.filter((i) => i !== item));
-    setCheckedItem((prev) => prev.filter((i) => i !== item));
+    setCheckedItems((prev) => prev.filter((i) => i !== item));
     setIsEditEnabled(null);
   };
 
@@ -44,18 +45,36 @@ const TodoContainer = () => {
         setItems((prev) =>
           prev.map((i) => (i === item ? editInputValue.trim() : i))
         );
-        if (checkedItem.includes(item)) {
-          setCheckedItem((prev) => prev.filter((i) => i !== item));
+        if (checkedItems.includes(item)) {
+          setCheckedItems((prev) => prev.filter((i) => i !== item));
         }
       }
     }
   };
 
+  const getTodoItems = () => {
+    const todo = JSON.parse(localStorage.getItem("todo"));
+    console.log(todo);
+    console.log(todo.items);
+    console.log(todo.items.length);
+    setTodo(JSON.parse(localStorage.getItem("todo")));
+  };
+
+  useEffect(() => {
+    console.log("items : ", items);
+    console.log("checkedItems : ", checkedItems);
+    getTodoItems();
+    // localStorage.setItem(
+    //   "todo",
+    //   JSON.stringify({ items: items, checkedItems: checkedItems })
+    // );
+  }, [items, checkedItems]);
+
   const handleCheckItem = (e) => {
-    if (!checkedItem.includes(e.target.id)) {
-      setCheckedItem((prev) => [...prev, e.target.id]);
+    if (!checkedItems.includes(e.target.id)) {
+      setCheckedItems((prev) => [...prev, e.target.id]);
     } else {
-      setCheckedItem((prev) => prev.filter((i) => i !== e.target.id));
+      setCheckedItems((prev) => prev.filter((i) => i !== e.target.id));
     }
   };
 
@@ -89,12 +108,27 @@ const TodoContainer = () => {
                 handleDelete={handleDelete}
                 isEditEnabled={isEditEnabled}
                 handleEdit={handleEdit}
-                checkedItem={checkedItem}
+                checkedItems={checkedItems}
                 handleCheckItem={handleCheckItem}
               />
             );
           })
         )}
+        {/* {todo &&
+          todo[items].map((item, index) => {
+            return (
+              <Items
+                key={item + index}
+                item={item}
+                handleDelete={handleDelete}
+                isEditEnabled={isEditEnabled}
+                handleEdit={handleEdit}
+                checkedItems={checkedItems}
+                handleCheckItem={handleCheckItem}
+              />
+            );
+          })} */}
+        {todo && <div>{todo.items}</div>}
       </ul>
     </div>
   );
