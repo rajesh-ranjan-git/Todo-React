@@ -1,22 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useRef } from "react";
 import { FaPlus } from "react-icons/fa6";
 import Items from "./Items";
+import { ToDoContext } from "../store/ToDoContext";
 
 const TodoContainer = () => {
-  const [items, setItems] = useState([]);
-  const [checkedItems, setCheckedItems] = useState([]);
-  const [isEditEnabled, setIsEditEnabled] = useState(null);
+  const { items, handleAddItems } = useContext(ToDoContext);
   const inputVal = useRef();
-
-  const handleAddItems = (item) => {
-    if (item !== "" && item !== " ") {
-      if (!items.includes(item.trim())) {
-        setItems((prev) => [...prev, item.trim()]);
-      } else {
-        alert("Item already added!");
-      }
-    }
-  };
 
   const handleEnter = (e) => {
     if (e.key === "Enter") {
@@ -24,58 +13,6 @@ const TodoContainer = () => {
       inputVal.current.value = "";
     }
   };
-
-  const handleDelete = (item) => {
-    setItems((prev) => prev.filter((i) => i !== item));
-    setCheckedItems((prev) => prev.filter((i) => i !== item));
-    setIsEditEnabled(null);
-  };
-
-  const handleEdit = (item, editInputValue) => {
-    if (!isEditEnabled) {
-      setIsEditEnabled(item);
-    } else {
-      setIsEditEnabled(null);
-      if (
-        editInputValue &&
-        editInputValue.trim() !== "" &&
-        editInputValue.trim() !== " "
-      ) {
-        setItems((prev) =>
-          prev.map((i) => (i === item ? editInputValue.trim() : i))
-        );
-        if (checkedItems.includes(item)) {
-          setCheckedItems((prev) => prev.filter((i) => i !== item));
-        }
-      }
-    }
-  };
-
-  const handleCheckItem = (e) => {
-    if (!checkedItems.includes(e.target.id)) {
-      setCheckedItems((prev) => [...prev, e.target.id]);
-    } else {
-      setCheckedItems((prev) => prev.filter((i) => i !== e.target.id));
-    }
-  };
-
-  const getTodoItems = () => {
-    const todoItems = JSON.parse(localStorage.getItem("items"));
-    const todoCheckedItems = JSON.parse(localStorage.getItem("checkedItems"));
-    if (todoItems !== null && todoCheckedItems !== null) {
-      setItems([...todoItems]);
-      setCheckedItems([...todoCheckedItems]);
-    }
-  };
-
-  useEffect(() => {
-    getTodoItems();
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("items", JSON.stringify(items));
-    localStorage.setItem("checkedItems", JSON.stringify(checkedItems));
-  }, [items, checkedItems]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-5 shadow-2xl backdrop-blur-2xl p-4 border border-opacity-50 rounded-2xl min-w-96 max-w-[80vw] min-h-96 text-center">
@@ -100,17 +37,7 @@ const TodoContainer = () => {
           <img src="/assets/no-items.png" alt="no-items" className="w-40" />
         ) : (
           items.map((item, index) => {
-            return (
-              <Items
-                key={item + index}
-                item={item}
-                handleDelete={handleDelete}
-                isEditEnabled={isEditEnabled}
-                handleEdit={handleEdit}
-                checkedItems={checkedItems}
-                handleCheckItem={handleCheckItem}
-              />
-            );
+            return <Items key={item + index} item={item} />;
           })
         )}
       </ul>

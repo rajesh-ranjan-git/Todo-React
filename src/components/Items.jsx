@@ -1,15 +1,17 @@
-import React, { useRef } from "react";
+import React, { useContext, useRef } from "react";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
+import { ToDoContext } from "../store/ToDoContext";
 
-const Items = ({
-  item,
-  handleDelete,
-  isEditEnabled,
-  handleEdit,
-  checkedItems,
-  handleCheckItem,
-}) => {
+const Items = ({ item }) => {
+  const {
+    isEditEnabled,
+    handleDelete,
+    handleEdit,
+    checkedItems,
+    handleCheckItem,
+  } = useContext(ToDoContext);
+
   const editInputVal = useRef();
 
   const handleEnter = (e) => {
