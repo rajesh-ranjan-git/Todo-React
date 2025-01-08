@@ -6,7 +6,6 @@ const TodoContainer = () => {
   const [items, setItems] = useState([]);
   const [checkedItems, setCheckedItems] = useState([]);
   const [isEditEnabled, setIsEditEnabled] = useState(null);
-  const [todo, setTodo] = useState({});
   const inputVal = useRef();
 
   const handleAddItems = (item) => {
@@ -52,24 +51,6 @@ const TodoContainer = () => {
     }
   };
 
-  const getTodoItems = () => {
-    const todo = JSON.parse(localStorage.getItem("todo"));
-    console.log(todo);
-    console.log(todo.items);
-    console.log(todo.items.length);
-    setTodo(JSON.parse(localStorage.getItem("todo")));
-  };
-
-  useEffect(() => {
-    console.log("items : ", items);
-    console.log("checkedItems : ", checkedItems);
-    getTodoItems();
-    // localStorage.setItem(
-    //   "todo",
-    //   JSON.stringify({ items: items, checkedItems: checkedItems })
-    // );
-  }, [items, checkedItems]);
-
   const handleCheckItem = (e) => {
     if (!checkedItems.includes(e.target.id)) {
       setCheckedItems((prev) => [...prev, e.target.id]);
@@ -77,6 +58,24 @@ const TodoContainer = () => {
       setCheckedItems((prev) => prev.filter((i) => i !== e.target.id));
     }
   };
+
+  const getTodoItems = () => {
+    const todoItems = JSON.parse(localStorage.getItem("items"));
+    const todoCheckedItems = JSON.parse(localStorage.getItem("checkedItems"));
+    if (todoItems !== null && todoCheckedItems !== null) {
+      setItems([...todoItems]);
+      setCheckedItems([...todoCheckedItems]);
+    }
+  };
+
+  useEffect(() => {
+    getTodoItems();
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("items", JSON.stringify(items));
+    localStorage.setItem("checkedItems", JSON.stringify(checkedItems));
+  }, [items, checkedItems]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-5 shadow-2xl backdrop-blur-2xl p-4 border border-opacity-50 rounded-2xl min-w-96 max-w-[80vw] min-h-96 text-center">
@@ -114,21 +113,6 @@ const TodoContainer = () => {
             );
           })
         )}
-        {/* {todo &&
-          todo[items].map((item, index) => {
-            return (
-              <Items
-                key={item + index}
-                item={item}
-                handleDelete={handleDelete}
-                isEditEnabled={isEditEnabled}
-                handleEdit={handleEdit}
-                checkedItems={checkedItems}
-                handleCheckItem={handleCheckItem}
-              />
-            );
-          })} */}
-        {todo && <div>{todo.items}</div>}
       </ul>
     </div>
   );

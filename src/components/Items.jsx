@@ -34,6 +34,7 @@ const Items = ({
           <input
             type="checkbox"
             name="todo"
+            checked={checkedItems.includes(item) ? true : false}
             id={item}
             className="checked:before:flex checked:before:justify-center checked:before:items-center checked:before:content-['\2713'] bg-transparent checked:bg-orange-500 border rounded-full w-4 h-4 checked:before:text-xs placeholder:text-neutral-300 transition-all cursor-pointer appearance-none checked:scale-105 ease-in-out"
             onChange={(e) => handleCheckItem(e)}
