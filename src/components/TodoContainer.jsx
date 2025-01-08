@@ -9,10 +9,12 @@ const TodoContainer = () => {
   const inputVal = useRef();
 
   const handleAddItems = (item) => {
-    if (!items.includes(item)) {
-      setItems((prev) => [...prev, item]);
-    } else {
-      alert("Item already added");
+    if (item !== "" && item !== " ") {
+      if (!items.includes(item.trim())) {
+        setItems((prev) => [...prev, item.trim()]);
+      } else {
+        alert("Item already added!");
+      }
     }
   };
 
@@ -34,9 +36,14 @@ const TodoContainer = () => {
       setIsEditEnabled(item);
     } else {
       setIsEditEnabled(null);
-      console.log(items);
-      if (editInputValue && editInputValue !== "") {
-        setItems((prev) => prev.map((i) => (i === item ? editInputValue : i)));
+      if (
+        editInputValue &&
+        editInputValue.trim() !== "" &&
+        editInputValue.trim() !== " "
+      ) {
+        setItems((prev) =>
+          prev.map((i) => (i === item ? editInputValue.trim() : i))
+        );
         if (checkedItem.includes(item)) {
           setCheckedItem((prev) => prev.filter((i) => i !== item));
         }
@@ -53,7 +60,7 @@ const TodoContainer = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-5 shadow-2xl backdrop-blur-2xl p-4 border border-opacity-50 rounded-2xl w-[80vw] min-w-96 min-h-96 text-center">
+    <div className="flex flex-col justify-center items-center gap-5 shadow-2xl backdrop-blur-2xl p-4 border border-opacity-50 rounded-2xl min-w-96 max-w-[80vw] min-h-96 text-center">
       <h1 className="font-bold text-3xl text-white">To Do - React App</h1>
       <div className="flex justify-between items-center w-full">
         <input
