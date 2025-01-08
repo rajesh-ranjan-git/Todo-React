@@ -24,7 +24,7 @@ const Items = ({
       {isEditEnabled === item ? (
         <input
           type="text"
-          className="bg-transparent bg-opacity-30 mx-4 pl-5 w-48 text-white transition-all caret-color-200 ease-in-out outline-none placeholder-slate-400"
+          className="bg-transparent bg-opacity-30 mx-4 pl-5 w-48 text-white transition-all caret-color-200 ease-in-out outline-none placeholder-slate-300"
           ref={editInputVal}
           placeholder={item}
           onKeyUp={(e) => handleEnter(e)}
